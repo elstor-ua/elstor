@@ -19,60 +19,7 @@
 <body>
 
     <h1>Каталог товаров</h1>
-    <div class="catalog" id="catalog">
+    <div id="catalog">
         </div>
-
-    <script>
-        // ТУТ УКАЖИТЕ ID ВАШЕЙ GOOGLE ТАБЛИЦЫ
-        const SPREADSHEET_ID = '2PACX-1vQZPyeC-poYD3tWQ_kdoqqiVY3ezhUf3jkYkNYQJC2BjIX2-Gl5WARzTDKqGTi7hqKYZcqEi4l8CEeF';
-        
-        // Ссылка для получения данных в формате CSV
-        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv`;
-
-        // Функция для преобразования CSV в массив объектов
-        function csvToObjects(csvText) {
-            const lines = csvText.split('\n');
-            // Читаем заголовки (первая строчка) и очищаем их от лишних кавычек
-            const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
-            const result = [];
-
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i]) continue;
-                // Разбираем строку, учитывая возможные запятые внутри кавычек
-                const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                const obj = {};
-                for (let j = 0; j < headers.length; j++) {
-                    let val = currentline[j] ? currentline[j].replace(/^"|"$/g, '').trim() : '';
-                    obj[headers[j]] = val;
-                }
-                result.push(obj);
-            }
-            return result;
-        }
-
-        // Загружаем данные из таблицы
-        fetch(url)
-            .then(response => response.text())
-            .then(csvText => {
-                const products = csvToObjects(csvText);
-                const catalogContainer = document.getElementById('catalog');
-
-                // Перебираем каждый товар и создаем для него HTML-шаблон
-                products.forEach(product => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    
-                    card.innerHTML = `
-                    <h3>${product.title}</h3>
-                        <p>${product.description || ''}</p>
-                        <div class="price">${product.price} руб.</div>
-                        <button class="btn">Купить</button>
-                    `;
-                    
-                    catalogContainer.appendChild(card);
-                });
-            })
-            .catch(error => console.error('Ошибка загрузки данных:', error));
-    </script>
 </body>
 </html>
