@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой Интернет-Магазин</title>
-    <style>
-        /* Простые стили для красивого отображения карточек */
-        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
-        h1 { text-align: center; color: #333; }
-        .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-        .card img { max-width: 100%; height: 200px; object-fit: contain; border-radius: 4px; }
-        .price { font-weight: bold; color: #e44d26; font-size: 1.2em; margin: 10px 0; }
-        .btn { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; }
-        .btn:hover { background: #0056b3; }
-    </style>
+    <title>Мой Магазин</title>
+    <!-- Подключаем стили, чтобы карточки выглядели красиво -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Подключаем JS в head с атрибутом defer -->
+    <script src="script.js" defer></script>
 </head>
 <body>
 
-    <h1>Каталог товаров</h1>
-    <div id="catalog">
+    <header>
+        <h1>Витрина товаров</h1>
+    </header>
+
+    <main>
+        <!-- Сюда JS будет добавлять товары автоматически -->
+        <div id="products-container" class="grid-container">
+            <p>Загрузка товаров...</p>
         </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Мой Магазин на GitHub</p>
+    </footer>
+
 </body>
 </html>
