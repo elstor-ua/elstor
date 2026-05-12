@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Интернет-Магазин</title>
+    <style>
+        /* Простые стили для красивого отображения карточек */
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #333; }
+        .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
+        .card img { max-width: 100%; height: 200px; object-fit: contain; border-radius: 4px; }
+        .price { font-weight: bold; color: #e44d26; font-size: 1.2em; margin: 10px 0; }
+        .btn { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <h1>Каталог товаров</h1>
+    <div class="catalog" id="catalog">
+        </div>
+
+    <script>
+        // ТУТ УКАЖИТЕ ID ВАШЕЙ GOOGLE ТАБЛИЦЫ
+        const SPREADSHEET_ID = '2PACX-1vQZPyeC-poYD3tWQ_kdoqqiVY3ezhUf3jkYkNYQJC2BjIX2-Gl5WARzTDKqGTi7hqKYZcqEi4l8CEeF';
+        
+        // Ссылка для получения данных в формате CSV
+        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv`;
+
+        // Функция для преобразования CSV в массив объектов
+        function csvToObjects(csvText) {
+            const lines = csvText.split('\n');
+            // Читаем заголовки (первая строчка) и очищаем их от лишних кавычек
+            const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
+            const result = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i]) continue;
+                // Разбираем строку, учитывая возможные запятые внутри кавычек
+                const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    let val = currentline[j] ? currentline[j].replace(/^"|"$/g, '').trim() : '';
+                    obj[headers[j]] = val;
+                }
+                result.push(obj);
+            }
+            return result;
+        }
+
+        // Загружаем данные из таблицы
+        fetch(url)
+            .then(response => response.text())
+            .then(csvText => {
+                const products = csvToObjects(csvText);
+                const catalogContainer = document.getElementById('catalog');
+
+                // Перебираем каждый товар и создаем для него HTML-шаблон
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    card.innerHTML = `
+                        <img src="${product.image || 'https://via.placeholder.com/200'}" alt="${product.title}">
+                        <h3>${product.title}</h3>
+                        <p>${product.description || ''}</p>
+                        <div class="price">${product.price} руб.</div>
+                        <button class="btn">Купить</button>
+                    `;
+                    
+                    catalogContainer.appendChild(card);
+                });
+            })
+            .catch(error => console.error('Ошибка загрузки данных:', error));
+    </script>
+</body>
+</html>
