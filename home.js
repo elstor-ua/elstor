@@ -20,7 +20,7 @@ async function loadProducts() {
                     <div class="product-info">
                         <h3>${product.name}</h3>
                         <p>${product.description}</p>
-                        <div class="price">${product.price} ₽</div>
+                        <div class="price">${product.price} грн</div>
                         <a href="${product.link}" class="buy-button">Купить</a>
                     </div>
                 </div>
