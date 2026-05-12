@@ -20,4 +20,11 @@
         "image": "https://via.placeholder.com/200",
         "link": "#"
     }
+    {
+        "name": "Тест123",
+        "description": "test1223",
+        "price": "102",
+        "image": "",
+        "link": "#"
+    }
 ]
